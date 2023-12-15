@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState, ChangeEvent } from "react";
+import { FC, ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import numeral from "numeral";
 import PropTypes from "prop-types";
@@ -66,11 +66,11 @@ interface Filters {
 
 const getStatusLabel = (boolCarStatus: BoolCarStatus): JSX.Element => {
   const map = {
-    false: {
+    "false": {
       text: "Unavailable",
       color: "error",
     },
-    true: {
+    "true": {
       text: "Available",
       color: "success",
     },
