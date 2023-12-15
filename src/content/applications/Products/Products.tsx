@@ -6,10 +6,6 @@ import ProductsTable from './ProductsTable';
 function Products() {
   const {
     cars,
-    loading,
-    setParams,
-    params,
-    meta,
     handleEdit,
     handleRemove,
     handleRemoveMultiple,

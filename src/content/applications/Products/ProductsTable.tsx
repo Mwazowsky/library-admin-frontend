@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from "react";
+import { FC, ChangeEvent, useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import numeral from "numeral";
 import PropTypes from "prop-types";
@@ -76,7 +76,7 @@ const getStatusLabel = (boolCarStatus: BoolCarStatus): JSX.Element => {
     },
   };
 
-  const { text, color }: any = map[boolCarStatus];
+  const { text, color }: any = map[boolCarStatus.toString()];
 
   return <Label color={color}>{text}</Label>;
 };
@@ -138,11 +138,11 @@ const ProductsTable: FC<ProductsTableProps> = ({
     },
   ];
 
-  const handleStatusChange = (e: ChangeEvent<{ value: unknown }>): void => {
+  const handleStatusChange = (e: ChangeEvent<{ value: string }>): void => {
     const value = e.target.value;
     console.log("value >>>", value);
     const selectedOption = statusOptions.find((option) => option.id === value);
-
+  
     if (selectedOption) {
       console.log("Selected Option:", selectedOption.value);
       setFilters((prevFilters) => ({
@@ -150,7 +150,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
         status: selectedOption.value,
       }));
     } else {
-      console.log("No matching option found for value:", selectedOption?.value);
+      console.log("No matching option found for value:", value);
     }
   };
 
@@ -160,7 +160,6 @@ const ProductsTable: FC<ProductsTableProps> = ({
   };
 
   const handleSelectOnecar = (
-    event: ChangeEvent<HTMLInputElement>,
     car_id: number
   ): void => {
     if (!selectedcars.includes(car_id)) {
@@ -172,7 +171,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
     }
   };
 
-  const handlePageChange = (event: any, newPage: number): void => {
+  const handlePageChange = (newPage: number): void => {
     setPage(newPage);
   };
 

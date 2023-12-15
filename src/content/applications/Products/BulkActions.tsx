@@ -4,7 +4,6 @@ import {
   Box,
   Menu,
   IconButton,
-  Button,
   ListItemText,
   ListItem,
   List,
@@ -16,7 +15,7 @@ interface BulkActionsProps {
   actionElement?: ReactNode;
 }
 
-const BulkActions: FC<BulkActionsProps> = ({ actionElement, ...rest }) => {
+const BulkActions: FC<BulkActionsProps> = ({ actionElement }) => {
   const [onMenuOpen, menuOpen] = useState<boolean>(false);
   const moreRef = useRef<HTMLButtonElement | null>(null);
 
