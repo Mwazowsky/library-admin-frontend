@@ -241,10 +241,10 @@ function Forms() {
                           <div key={index}>
                             <TextField
                               id="outlined-input"
-                              name="spec"
-                              label="Spec"
+                              name="option"
+                              label="option"
                               size="small"
-                              placeholder="Example Spec"
+                              placeholder="Example option"
                               value={input.option}
                               onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
