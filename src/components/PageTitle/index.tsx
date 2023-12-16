@@ -13,7 +13,6 @@ interface PageTitleProps {
 const PageTitle: FC<PageTitleProps> = ({
   heading = "",
   subHeading = "",
-  docs = "",
   actionElement,
   ...rest
 }) => {

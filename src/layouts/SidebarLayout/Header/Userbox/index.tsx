@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 
 import axios from "axios";
-import { NavLink } from "react-router-dom";
 
 import {
   Avatar,
@@ -76,7 +75,7 @@ function HeaderUserbox() {
     jobtitle: "Project Manager",
   };
 
-  const ref = useRef<any>(null);
+  const ref = useRef(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 
   const handleOpen = (): void => {
@@ -104,7 +103,7 @@ function HeaderUserbox() {
         }
 
         const response = await axios.get(
-          'http://localhost:8060/api/user/user-data',
+          'https://binar-rental-backend-app.fly.dev/api/user/user-data',
           {
             headers: {
               Authorization: token,
@@ -112,7 +111,7 @@ function HeaderUserbox() {
           }
         );
 
-        const userData = response.data;
+        const userData: IUser = response.data?.user;
         setUserData(userData);
       } catch (error) {
         console.log('Error fetching user data:', error);
@@ -122,7 +121,7 @@ function HeaderUserbox() {
     fetchUserData();
   }, []);
 
-  console.log("userData >>>", userData?.user);
+  console.log("userData >>>", userData);
 
   return (
     <>
@@ -130,9 +129,9 @@ function HeaderUserbox() {
         <Avatar variant="rounded" alt={user.name} src={user.avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{`${userData?.user.first_name} ${userData?.user.last_name}`}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{`${userData?.first_name} ${userData?.last_name}`}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {userData?.user.role}
+              {userData?.role}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -154,11 +153,11 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={userData?.user.first_name} src={user.avatar} />
+          <Avatar variant="rounded" alt={userData?.first_name} src={user.avatar} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{userData?.user.email}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{userData?.email}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {userData?.user.role}
+              {userData?.role}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

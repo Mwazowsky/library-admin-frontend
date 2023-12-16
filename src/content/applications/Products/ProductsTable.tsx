@@ -25,6 +25,7 @@ import {
   Typography,
   useTheme,
   CardHeader,
+  SelectChangeEvent
 } from "@mui/material";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import TextField from "@mui/material/TextField";
@@ -64,19 +65,25 @@ interface Filters {
   status?: string;
 }
 
+type ColorType = "error" | "success"; // Define the specific color types accepted by Label
+
+type StatusMap = {
+  [key: string]: { text: string; color: ColorType };
+};
+
 const getStatusLabel = (boolCarStatus: BoolCarStatus): JSX.Element => {
-  const map = {
-    "false": {
+  const map: StatusMap = {
+    false: {
       text: "Unavailable",
       color: "error",
     },
-    "true": {
+    true: {
       text: "Available",
       color: "success",
     },
   };
 
-  const { text, color }: any = map[boolCarStatus.toString()];
+  const { text, color } = boolCarStatus ? map.true : map.false;
 
   return <Label color={color}>{text}</Label>;
 };
@@ -138,7 +145,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
     },
   ];
 
-  const handleStatusChange = (e: ChangeEvent<{ value: string }>): void => {
+  const handleStatusChange = (e: SelectChangeEvent<string>): void => {
     const value = e.target.value;
     console.log("value >>>", value);
     const selectedOption = statusOptions.find((option) => option.id === value);
@@ -171,7 +178,8 @@ const ProductsTable: FC<ProductsTableProps> = ({
     }
   };
 
-  const handlePageChange = (newPage: number): void => {
+  const handlePageChange = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number): void => {
+    event.preventDefault();
     setPage(newPage);
   };
 
@@ -282,8 +290,8 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     <Checkbox
                       color="primary"
                       checked={iscarselected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOnecar(event, car.car_id)
+                      onChange={() =>
+                        handleSelectOnecar(car.car_id)
                       }
                       value={iscarselected}
                       onClick={(event: React.MouseEvent<HTMLButtonElement>) =>

@@ -1,4 +1,4 @@
-import { FormEvent, useState, ChangeEvent } from "react";
+import { FormEvent, useState } from "react";
 import axios, { AxiosError } from "axios";
 import {
   Box,
@@ -13,6 +13,7 @@ import {
   AlertProps,
   Select,
   MenuItem,
+  SelectChangeEvent
 } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 const MainContent = styled(Box)(
-  ({ theme }) => `
+  () => `
     height: 100%;
     display: flex;
     flex: 1;
@@ -45,7 +46,7 @@ function Register() {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [alert, setAlert] = useState<IAlert>();
-  const [roles, setRoles] = useState<Roles>({ name: "user" })
+  const [roles, setRoles] = useState<Roles>({ name: "user" });
   const navigate = useNavigate();
 
   const rolesOptions = [
@@ -66,7 +67,7 @@ function Register() {
     },
   ];
 
-  const handleStatusChange = (e: ChangeEvent<{ value: unknown }>): void => {
+  const handleStatusChange = (e: SelectChangeEvent<string>): void => {
     const value = e.target.value;
     console.log("value >>>", value);
     const selectedOption = rolesOptions.find((option) => option.id === value);
@@ -85,14 +86,15 @@ function Register() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8060/api/user/register",
-        { 
-          first_name: firstName, 
-          last_name: lastName, 
-          email: email, 
-          password: password, 
-          role: roles?.name }
+      await axios.post(
+        "https://binar-rental-backend-app.fly.dev/api/user/register",
+        {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          password: password,
+          role: roles?.name,
+        }
       );
 
       setAlert({
@@ -148,58 +150,60 @@ function Register() {
                   variant="outlined"
                   fullWidth
                 >
-                  <TextField
-                    type="text"
-                    label="First Name"
-                    placeholder="Your First Name"
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                  <TextField
-                    type="text"
-                    label="Last Name"
-                    placeholder="Your Last Name"
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                  <TextField
-                    type="text"
-                    label="Email"
-                    placeholder="Your Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <TextField
-                    type="password"
-                    label="Password"
-                    placeholder="Your Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <Select
-                    value={roles.name}
-                    onChange={handleStatusChange}
-                    sx={{
-                      width: "45%",
-                      alignContent: "center",
-                      alignItems: "center",
-                      alignSelf: "center",
-                      marginBottom: "2rem"
-                    }}
-                  >
-                    {rolesOptions.map((roleOption) => (
-                      <MenuItem key={roleOption.id} value={roleOption.value}>
-                        {roleOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <Button
-                    onClick={handleSubmit}
-                    variant="contained"
-                    sx={{
-                      alignContent: "center",
-                      alignSelf: "center",
-                      width: "35%",
-                    }}
-                  >
-                    Register
-                  </Button>
+                  <form onSubmit={handleSubmit}>
+                    <TextField
+                      type="text"
+                      label="First Name"
+                      placeholder="Your First Name"
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                    <TextField
+                      type="text"
+                      label="Last Name"
+                      placeholder="Your Last Name"
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                    <TextField
+                      type="text"
+                      label="Email"
+                      placeholder="Your Email"
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <TextField
+                      type="password"
+                      label="Password"
+                      placeholder="Your Password"
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Select
+                      value={roles.name}
+                      onChange={handleStatusChange}
+                      sx={{
+                        width: "45%",
+                        alignContent: "center",
+                        alignItems: "center",
+                        alignSelf: "center",
+                        marginBottom: "2rem",
+                      }}
+                    >
+                      {rolesOptions.map((roleOption) => (
+                        <MenuItem key={roleOption.id} value={roleOption.value}>
+                          {roleOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        alignContent: "center",
+                        alignSelf: "center",
+                        width: "35%",
+                      }}
+                    >
+                      Register
+                    </Button>
+                  </form>
                 </FormControl>
               </div>
               <Divider sx={{ my: 4 }}>OR</Divider>

@@ -8,6 +8,8 @@ import SuspenseLoader from "src/components/SuspenseLoader";
 import PrivateProvider from "./providers/PrivateProvider";
 import PublicProvider from "./providers/PublicProvider";
 
+
+
 type Props = Record<string, unknown>; // Change this to match the props of your components
 type ComponentWithProps = ComponentType<Props>;
 

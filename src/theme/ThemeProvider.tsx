@@ -6,14 +6,15 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-export const ThemeContext = React.createContext(
-  (themeName: string): void => {}
+export const ThemeContext = React.createContext<(themeName: string) => void>(
+  (): void => {}
 );
 
 const ThemeProviderWrapper: React.FC<ThemeProviderProps> = (props) => {
   const curThemeName = localStorage.getItem("appTheme") || "PureLightTheme";
   const [themeName, _setThemeName] = useState(curThemeName);
   const theme = themeCreator(themeName);
+  
   const setThemeName = (themeName: string): void => {
     localStorage.setItem("appTheme", themeName);
     _setThemeName(themeName);

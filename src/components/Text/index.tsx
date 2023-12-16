@@ -60,7 +60,6 @@ const TextWrapper = styled('span')(
 );
 
 const Text: FC<TextProps> = ({
-  className,
   color = 'secondary',
   flex,
   children,

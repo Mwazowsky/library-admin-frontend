@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet-async";
-import { useState } from "react";
 import {
   Container,
   Grid,
@@ -41,7 +40,7 @@ function Forms() {
     loadingSubmit,
     fileItem,
     optionsInputFields,
-    specsInputFields
+    specsInputFields,
   } = useAction();
 
   return (
@@ -55,15 +54,16 @@ function Forms() {
           subHeading="Components that are used to build interactive placeholders used for data collection from users."
           docs="/management/products"
           actionElement={
-            <LoadingButton
-              type="submit"
-              variant="contained"
-              loading={loadingSubmit}
-              startIcon={<AddTwoToneIcon fontSize="small" />}
-              onClick={handleSubmit}
-            >
-              Submit
-            </LoadingButton>
+            <form onSubmit={handleSubmit}>
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                loading={loadingSubmit}
+                startIcon={<AddTwoToneIcon fontSize="small" />}
+              >
+                Submit
+              </LoadingButton>
+            </form>
           }
         />
       </PageTitleWrapper>
@@ -186,14 +186,16 @@ function Forms() {
                       }
                     />
                     <Box>
-                      <div>AVailable At: </div>
+                      <div>Available At: </div>
                       <DateTimePicker
-                        onChange={(newValue) =>
+                        onChange={(newValue) => {
+                          const newAvailableAt =
+                            typeof newValue === "string" ? newValue : "";
                           setFormValues({
                             ...formValues,
-                            availableAt: newValue || "",
-                          })
-                        }
+                            availableAt: newAvailableAt,
+                          });
+                        }}
                       />
                     </Box>
                     <Box>
@@ -202,6 +204,11 @@ function Forms() {
                         <Switch
                           name="available"
                           title="Available"
+                          checked={
+                            formValues.available !== undefined
+                              ? formValues.available
+                              : false
+                          }
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
@@ -238,14 +245,14 @@ function Forms() {
                           <div key={index}>
                             <TextField
                               id="outlined-input"
-                              name="option"
-                              label="Option"
+                              name="spec"
+                              label="Spec"
                               size="small"
-                              placeholder="Example Option"
+                              placeholder="Example Spec"
                               value={input.option}
-                              onChange={(e) =>
-                                handleOptionsFormChange(index, e)
-                              }
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                              ) => handleOptionsFormChange(index, e)}
                             />
                           </div>
                         );
@@ -254,6 +261,7 @@ function Forms() {
                         <Button onClick={addOptionFields}>Add More..</Button>
                       </Stack>
                     </Box>
+
                     <Box>
                       {specsInputFields.map((input, index) => {
                         return (
@@ -265,7 +273,9 @@ function Forms() {
                               size="small"
                               placeholder="Example Spec"
                               value={input.spec}
-                              onChange={(e) => handleSpecsFormChange(index, e)}
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                              ) => handleSpecsFormChange(index, e)}
                             />
                           </div>
                         );
@@ -281,7 +291,7 @@ function Forms() {
                       sx={{ mb: 3 }}
                       loading={loadingCover}
                     >
-                      Upload Book Cover
+                      Upload Car Image
                       <VisuallyHiddenInput
                         type="file"
                         accept=".png, .jpg, .jpeg"

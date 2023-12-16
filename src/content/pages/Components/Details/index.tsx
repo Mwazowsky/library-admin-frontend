@@ -12,32 +12,21 @@ import {
   CardContent,
   Divider,
   Stack,
+  Box
 } from "@mui/material";
 import Footer from "../../../../components/Footer";
-import CardActions from "@mui/material/CardActions";
 
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import useAction from "./details.hooks";
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
-
 function Details() {
-  const { fetchCarData, setCar, car, optionsInputFields, specsInputFields } =
+  const { fetchCarData, car} =
     useAction();
 
   useEffect(() => {
     fetchCarData();
-  }, []);
+  }, [fetchCarData]);
 
   console.log(car);
 

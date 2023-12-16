@@ -17,7 +17,7 @@ export default function useCreate() {
         { spec: string }[]
     >([{ spec: "" }]);
 
-    const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             setLoadingSubmit(true);
@@ -30,7 +30,7 @@ export default function useCreate() {
             };
             console.log("Payload >>>", payload);
 
-            await axios.post('http://localhost:8060/api/cars', payload, {
+            await axios.post('https://binar-rental-backend-app.fly.dev/api/cars', payload, {
                 headers: {
                     Authorization: localStorage.getItem('token'),
                 },
@@ -53,7 +53,7 @@ export default function useCreate() {
                 formData.append('image', files[0]);
 
                 const response = await axios.post(
-                    'http://localhost:8060/api/cars/upload',
+                    'https://binar-rental-backend-app.fly.dev/api/cars/upload',
                     formData,
                     {
                         headers: {
@@ -97,12 +97,12 @@ export default function useCreate() {
     };
 
     const addOptionFields = () => {
-        let newfield = { option: "" };
+        const newfield = { option: "" };
         setOptionsInputFields([...optionsInputFields, newfield]);
     };
 
     const addSpecFields = () => {
-        let newfield = { spec: "" };
+        const newfield = { spec: "" };
         setSpecsInputFields([...specsInputFields, newfield]);
     };
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IFileItem } from 'src/services/types';
 import { ICar } from 'src/models/product';
@@ -37,26 +37,26 @@ export default function useCreate() {
         { spec: string }[]
     >([{ spec: "" }]);
     {
-        const fetchCarData = async () => {
+        const fetchCarData = useCallback(async () => {
             try {
-                const response = await axios.get(
-                    `http://localhost:8060/api/cars/${car_id}`,
-                    {
-                        headers: {
-                            Authorization: localStorage.getItem("token"),
-                        },
-                    }
-                );
-                const bookData = response.data.data;
-                setFormValues(bookData);
-                setOptionsInputFields(bookData.options.optionsInputFields);
-                setSpecsInputFields(bookData.specs.specsInputFields);
+              const response = await axios.get(
+                `https://binar-rental-backend-app.fly.dev/api/cars/${car_id}`,
+                {
+                  headers: {
+                    Authorization: localStorage.getItem("token"),
+                  },
+                }
+              );
+              const carData = response.data.data;
+              setFormValues(carData);
+              setOptionsInputFields(carData.options.optionsInputFields);
+              setSpecsInputFields(carData.specs.specsInputFields);
             } catch (error) {
-                console.log("error > ", error);
+              console.log("error > ", error);
             }
-        };
+          }, [car_id]);
 
-        const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
+        const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             try {
                 setLoadingSubmit(true);
@@ -69,7 +69,7 @@ export default function useCreate() {
                 };
                 console.log("Payload >>>", payload);
 
-                await axios.put(`http://localhost:8060/api/cars/${car_id}`, payload, {
+                await axios.put(`https://binar-rental-backend-app.fly.dev/api/cars/${car_id}`, payload, {
                     headers: {
                         Authorization: localStorage.getItem('token'),
                     },
@@ -92,7 +92,7 @@ export default function useCreate() {
                     formData.append('image', files[0]);
 
                     const response = await axios.post(
-                        'http://localhost:8060/api/cars/upload',
+                        'https://binar-rental-backend-app.fly.dev/api/cars/upload',
                         formData,
                         {
                             headers: {
@@ -136,12 +136,12 @@ export default function useCreate() {
         };
 
         const addOptionFields = () => {
-            let newfield = { option: "" };
+            const newfield = { option: "" };
             setOptionsInputFields([...optionsInputFields, newfield]);
         };
 
         const addSpecFields = () => {
-            let newfield = { spec: "" };
+            const newfield = { spec: "" };
             setSpecsInputFields([...specsInputFields, newfield]);
         };
 

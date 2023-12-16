@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 const MainContent = styled(Box)(
-  ({ theme }) => `
+  () => `
     height: 100%;
     display: flex;
     flex: 1;
@@ -43,7 +43,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8060/api/user/login",
+        "https://binar-rental-backend-app.fly.dev/api/user/login",
         { email, password }
       );
 
@@ -104,29 +104,31 @@ function Login() {
                   variant="outlined"
                   fullWidth
                 >
-                  <TextField
-                    type="text"
-                    label="Email"
-                    placeholder="Your Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <TextField
-                    type="password"
-                    label="Password"
-                    placeholder="Your Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <Button
-                    onClick={handleSubmit}
-                    variant="contained"
-                    sx={{
-                      alignContent: "center",
-                      alignSelf: "center",
-                      width: "35%",
-                    }}
-                  >
-                    Login
-                  </Button>
+                  <form onSubmit={handleSubmit}>
+                    <TextField
+                      type="text"
+                      label="Email"
+                      placeholder="Your Email"
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <TextField
+                      type="password"
+                      label="Password"
+                      placeholder="Your Password"
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        alignContent: "center",
+                        alignSelf: "center",
+                        width: "35%",
+                      }}
+                    >
+                      Login
+                    </Button>
+                  </form>
                 </FormControl>
               </div>
               <Divider sx={{ my: 4 }}>OR</Divider>

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -27,9 +28,11 @@
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.3",
     "react-router-dom": "^6.20.0",
-    "styled-components": "^6.1.1"
+    "styled-components": "^6.1.1",
+    "web-vitals": "^3.5.0"
   },
   "devDependencies": {
+    "@types/node": "^20.10.4",
     "@types/nprogress": "^0.2.3",
     "@types/numeral": "^2.0.5",
     "@types/react": "^18.2.37",

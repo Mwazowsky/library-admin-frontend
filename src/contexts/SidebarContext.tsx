@@ -1,7 +1,7 @@
 import { FC, useState, createContext } from 'react';
 
 type SidebarContext = {
-  sidebarToggle: any;
+  sidebarToggle: boolean; // Update this based on the actual type
   toggleSidebar: () => void;
   closeSidebar: () => void;
 };
@@ -10,7 +10,7 @@ interface SidebarProviderProps {
   children: React.ReactNode;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+ 
 export const SidebarContext = createContext<SidebarContext>(
   {} as SidebarContext
 );

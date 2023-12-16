@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ICar } from 'src/models/product';
 
@@ -31,24 +31,24 @@ export default function useDetails() {
         { spec: string }[]
     >([{ spec: "" }]);
     {
-        const fetchCarData = async () => {
+        const fetchCarData = useCallback(async () => {
             try {
-                const response = await axios.get(
-                    `http://localhost:8060/api/cars/${car_id}`,
-                    {
-                        headers: {
-                            Authorization: localStorage.getItem("token"),
-                        },
-                    }
-                );
-                const bookData = response.data.data;
-                setCar(bookData);
-                setOptionsInputFields(bookData.options.optionsInputFields);
-                setSpecsInputFields(bookData.specs.specsInputFields);
+              const response = await axios.get(
+                `https://binar-rental-backend-app.fly.dev/api/cars/${car_id}`,
+                {
+                  headers: {
+                    Authorization: localStorage.getItem("token"),
+                  },
+                }
+              );
+              const carData = response.data.data;
+              setCar(carData);
+              setOptionsInputFields(carData.options.optionsInputFields);
+              setSpecsInputFields(carData.specs.specsInputFields);
             } catch (error) {
-                console.log("error > ", error);
+              console.log("error > ", error);
             }
-        };
+          }, [car_id]);
 
         return {
             fetchCarData,
