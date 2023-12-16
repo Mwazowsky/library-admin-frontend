@@ -10,6 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { format } from 'date-fns';
 
 import PageTitle from "../../../../../components/PageTitle";
 import PageTitleWrapper from "../../../../../components/PageTitleWrapper";
@@ -201,22 +202,30 @@ function Forms() {
                       }
                     />
                     <Box>
-                      <div>AVailable At: </div>
+                      <div>Available At: </div>
                       <DateTimePicker
                         value={
                           formValues?.availableAt
                             ? new Date(formValues.availableAt)
                             : null
                         }
-                        onChange={(newValue) =>
-                          setFormValues({
-                            ...formValues,
-                            availableAt:
-                              newValue instanceof Date
-                                ? newValue.toISOString()
-                                : "",
-                          })
-                        }
+                        onChange={(newValue: Date | null) => {
+                          if (newValue) {
+                            const formattedDateTime = format(
+                              newValue,
+                              "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+                            );
+                            setFormValues({
+                              ...formValues,
+                              availableAt: formattedDateTime,
+                            });
+                          } else {
+                            setFormValues({
+                              ...formValues,
+                              availableAt: "1999-12-08T17:00:00.000Z", // Or your default value when newValue is null
+                            });
+                          }
+                        }}
                       />
                     </Box>
                     <Box>

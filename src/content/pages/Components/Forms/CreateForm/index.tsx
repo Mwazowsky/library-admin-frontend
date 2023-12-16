@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { format } from 'date-fns';
 
 import PageTitle from "../../../../../components/PageTitle";
 import PageTitleWrapper from "../../../../../components/PageTitleWrapper";
@@ -188,13 +189,22 @@ function Forms() {
                     <Box>
                       <div>Available At: </div>
                       <DateTimePicker
-                        onChange={(newValue) => {
-                          const newAvailableAt =
-                            typeof newValue === "string" ? newValue : "";
-                          setFormValues({
-                            ...formValues,
-                            availableAt: newAvailableAt,
-                          });
+                        onChange={(newValue: Date | null) => {
+                          if (newValue) {
+                            const formattedDateTime = format(
+                              newValue,
+                              "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+                            );
+                            setFormValues({
+                              ...formValues,
+                              availableAt: formattedDateTime,
+                            });
+                          } else {
+                            setFormValues({
+                              ...formValues,
+                              availableAt: "", // Or your default value when newValue is null
+                            });
+                          }
                         }}
                       />
                     </Box>
