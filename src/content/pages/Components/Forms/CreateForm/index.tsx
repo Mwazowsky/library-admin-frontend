@@ -200,15 +200,11 @@ function Forms() {
                     </Box>
                     <Box>
                       <Stack direction={"row"} alignItems={"center"}>
-                        <div>AVailable</div>
+                        <div>Available</div>
                         <Switch
                           name="available"
                           title="Available"
-                          checked={
-                            formValues.available !== undefined
-                              ? formValues.available
-                              : false
-                          }
+                          checked={formValues?.available ?? false}
                           onChange={(e) =>
                             setFormValues({
                               ...formValues,
