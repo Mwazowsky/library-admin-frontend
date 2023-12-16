@@ -1,43 +1,17 @@
-import { ComponentType, Suspense, lazy } from "react";
+import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import { RouteObject } from "react-router";
-
 import SidebarLayout from "src/layouts/SidebarLayout";
-
-import SuspenseLoader from "src/components/SuspenseLoader";
 import PrivateProvider from "./providers/PrivateProvider";
 import PublicProvider from "./providers/PublicProvider";
+import Loader from "./Loader";
 
-
-
-type Props = Record<string, unknown>; // Change this to match the props of your components
-type ComponentWithProps = ComponentType<Props>;
-
-// Higher-order component (HOC) with explicit types
-const Loader = (Component: ComponentWithProps) => (props: Props) => (
-  <Suspense fallback={<SuspenseLoader />}>
-    <Component {...props} />
-  </Suspense>
-);
-
-const Products = Loader(
-  lazy(() => import("src/content/applications/Products"))
-);
-
-// Components
-
+const Products = Loader(lazy(() => import("src/content/applications/Products")));
 const Cards = Loader(lazy(() => import("src/content/pages/Components/Details")));
-
 const CreateForms = Loader(lazy(() => import("src/content/pages/Components/Forms/CreateForm")));
-
 const UpdateForms = Loader(lazy(() => import("src/content/pages/Components/Forms/UpdateForm")));
-
-const Login = Loader(
-  lazy(() => import("src/content/pages/Components/Login"))
-);
-const Register = Loader(
-  lazy(() => import("src/content/pages/Components/Register"))
-);
+const Login = Loader(lazy(() => import("src/content/pages/Components/Login")));
+const Register = Loader(lazy(() => import("src/content/pages/Components/Register")));
 
 const routes: RouteObject[] = [
   {
