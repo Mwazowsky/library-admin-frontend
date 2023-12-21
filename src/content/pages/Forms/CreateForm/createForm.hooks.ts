@@ -30,7 +30,7 @@ export default function useCreate() {
             };
             console.log("Payload >>>", payload);
 
-            await axios.post('https://binar-rental-backend-app.fly.dev/api/cars', payload, {
+            await axios.post('http://localhost:8060/api/cars', payload, {
                 headers: {
                     Authorization: localStorage.getItem('token'),
                 },
@@ -53,7 +53,7 @@ export default function useCreate() {
                 formData.append('image', files[0]);
 
                 const response = await axios.post(
-                    'https://binar-rental-backend-app.fly.dev/api/cars/upload',
+                    'http://localhost:8060/api/cars/upload',
                     formData,
                     {
                         headers: {

@@ -40,7 +40,7 @@ export default function useCreate() {
         const fetchCarData = useCallback(async () => {
             try {
               const response = await axios.get(
-                `https://binar-rental-backend-app.fly.dev/api/cars/${car_id}`,
+                `http://localhost:8060/api/cars/${car_id}`,
                 {
                   headers: {
                     Authorization: localStorage.getItem("token"),
@@ -69,7 +69,7 @@ export default function useCreate() {
                 };
                 console.log("Payload >>>", payload);
 
-                await axios.put(`https://binar-rental-backend-app.fly.dev/api/cars/${car_id}`, payload, {
+                await axios.put(`http://localhost:8060/api/cars/${car_id}`, payload, {
                     headers: {
                         Authorization: localStorage.getItem('token'),
                     },
@@ -92,7 +92,7 @@ export default function useCreate() {
                     formData.append('image', files[0]);
 
                     const response = await axios.post(
-                        'https://binar-rental-backend-app.fly.dev/api/cars/upload',
+                        'http://localhost:8060/api/cars/upload',
                         formData,
                         {
                             headers: {

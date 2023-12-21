@@ -2,8 +2,8 @@ import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
 import numeral from "numeral";
 
-import PageTitle from "../../../../components/PageTitle";
-import PageTitleWrapper from "../../../../components/PageTitleWrapper";
+import PageTitle from "../../../components/PageTitle";
+import PageTitleWrapper from "../../../components/PageTitleWrapper";
 import {
   Container,
   Grid,
@@ -14,7 +14,8 @@ import {
   Stack,
   Box
 } from "@mui/material";
-import Footer from "../../../../components/Footer";
+
+import Footer from "../../../components/Footer";
 
 import Typography from "@mui/material/Typography";
 

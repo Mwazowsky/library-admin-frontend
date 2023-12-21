@@ -11,9 +11,6 @@ import {
   TextField,
   Alert,
   AlertProps,
-  Select,
-  MenuItem,
-  SelectChangeEvent
 } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
@@ -36,72 +33,29 @@ interface IAlert extends AlertProps {
   message: string;
 }
 
-interface Roles {
-  name?: string;
-}
-
-function Register() {
-  const [firstName, setFirstName] = useState<string>();
-  const [lastName, setLastName] = useState<string>();
+function Login() {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [alert, setAlert] = useState<IAlert>();
-  const [roles, setRoles] = useState<Roles>({ name: "user" });
   const navigate = useNavigate();
-
-  const rolesOptions = [
-    {
-      id: "user",
-      name: "User",
-      value: "user",
-    },
-    {
-      id: "admin",
-      name: "Admin",
-      value: "admin",
-    },
-    {
-      id: "superadmin",
-      name: "Super Admin",
-      value: "superadmin",
-    },
-  ];
-
-  const handleStatusChange = (e: SelectChangeEvent<string>): void => {
-    const value = e.target.value;
-    console.log("value >>>", value);
-    const selectedOption = rolesOptions.find((option) => option.id === value);
-
-    if (selectedOption) {
-      console.log("Selected Option:", selectedOption.value);
-      setRoles((prevFilters) => ({
-        ...prevFilters,
-        name: selectedOption.value,
-      }));
-    } else {
-      console.log("No matching option found for value:", selectedOption?.value);
-    }
-  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "https://binar-rental-backend-app.fly.dev/api/user/register",
-        {
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          password: password,
-          role: roles?.name,
-        }
+      const response = await axios.post(
+        "http://localhost:8060/api/user/login",
+        { email, password }
       );
 
+      const { token } = response.data;
+
+      localStorage.setItem("token", `Bearer ${token}`);
+
       setAlert({
-        message: "Register success!",
+        message: "Login success!",
         severity: "success",
       });
-      navigate("/login");
+      navigate("/management/products");
     } catch (error) {
       if (error instanceof AxiosError) {
         return setAlert({
@@ -132,7 +86,7 @@ function Register() {
                   src="/static/images/status/404.svg"
                 />
                 <Typography variant="h2" sx={{ my: 2 }}>
-                  Register
+                  Login
                 </Typography>
               </Box>
               <div
@@ -143,26 +97,14 @@ function Register() {
                 {alert && alert.message && (
                   <Alert severity={alert.severity}>{alert.message}</Alert>
                 )}
-                <FormControl
-                  sx={{
-                    "& .MuiTextField-root": { m: 1 },
-                  }}
-                  variant="outlined"
-                  fullWidth
-                >
-                  <form onSubmit={handleSubmit}>
-                    <TextField
-                      type="text"
-                      label="First Name"
-                      placeholder="Your First Name"
-                      onChange={(e) => setFirstName(e.target.value)}
-                    />
-                    <TextField
-                      type="text"
-                      label="Last Name"
-                      placeholder="Your Last Name"
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
+                <form onSubmit={handleSubmit}>
+                  <FormControl
+                    sx={{
+                      "& .MuiTextField-root": { m: 1 },
+                    }}
+                    variant="outlined"
+                    fullWidth
+                  >
                     <TextField
                       type="text"
                       label="Email"
@@ -175,23 +117,6 @@ function Register() {
                       placeholder="Your Password"
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    <Select
-                      value={roles.name}
-                      onChange={handleStatusChange}
-                      sx={{
-                        width: "45%",
-                        alignContent: "center",
-                        alignItems: "center",
-                        alignSelf: "center",
-                        marginBottom: "2rem",
-                      }}
-                    >
-                      {rolesOptions.map((roleOption) => (
-                        <MenuItem key={roleOption.id} value={roleOption.value}>
-                          {roleOption.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
                     <Button
                       type="submit"
                       variant="contained"
@@ -201,14 +126,14 @@ function Register() {
                         width: "35%",
                       }}
                     >
-                      Register
+                      Login
                     </Button>
-                  </form>
-                </FormControl>
+                  </FormControl>
+                </form>
               </div>
               <Divider sx={{ my: 4 }}>OR</Divider>
               <Button
-                href="/login"
+                href="/register"
                 variant="outlined"
                 sx={{
                   alignContent: "center",
@@ -216,7 +141,7 @@ function Register() {
                   width: "35%",
                 }}
               >
-                Login
+                Register
               </Button>
             </Card>
           </Container>
@@ -226,4 +151,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;

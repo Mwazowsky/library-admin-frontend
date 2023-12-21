@@ -12,9 +12,9 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { format } from 'date-fns';
 
-import PageTitle from "../../../../../components/PageTitle";
-import PageTitleWrapper from "../../../../../components/PageTitleWrapper";
-import Footer from "../../../../../components/Footer";
+import PageTitle from "../../../../components/PageTitle";
+import PageTitleWrapper from "../../../../components/PageTitleWrapper";
+import Footer from "../../../../components/Footer";
 
 import Box from "@mui/material/Box";
 import Switch from "@mui/material/Switch";

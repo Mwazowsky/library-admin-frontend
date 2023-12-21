@@ -17,7 +17,7 @@ function Products() {
   return (
     <Card>
       <ProductsTable 
-        cars={cars?.cars} 
+        cars={cars} 
         handleEdit={handleEdit} 
         handleRemove={handleRemove} 
         handleSearch={handleSearch}

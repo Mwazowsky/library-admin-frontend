@@ -103,7 +103,7 @@ function HeaderUserbox() {
         }
 
         const response = await axios.get(
-          'https://binar-rental-backend-app.fly.dev/api/user/user-data',
+          'http://localhost:8060/api/user/user-data',
           {
             headers: {
               Authorization: token,

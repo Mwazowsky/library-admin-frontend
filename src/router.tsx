@@ -7,11 +7,11 @@ import PublicProvider from "./providers/PublicProvider";
 import Loader from "./Loader";
 
 const Products = Loader(lazy(() => import("src/content/applications/Products")));
-const Cards = Loader(lazy(() => import("src/content/pages/Components/Details")));
-const CreateForms = Loader(lazy(() => import("src/content/pages/Components/Forms/CreateForm")));
-const UpdateForms = Loader(lazy(() => import("src/content/pages/Components/Forms/UpdateForm")));
-const Login = Loader(lazy(() => import("src/content/pages/Components/Login")));
-const Register = Loader(lazy(() => import("src/content/pages/Components/Register")));
+const Cards = Loader(lazy(() => import("src/content/pages/Details")));
+const CreateForms = Loader(lazy(() => import("src/content/pages/Forms/CreateForm")));
+const UpdateForms = Loader(lazy(() => import("src/content/pages/Forms/UpdateForm")));
+const Login = Loader(lazy(() => import("src/content/pages/Login")));
+const Register = Loader(lazy(() => import("src/content/pages/Register")));
 
 const routes: RouteObject[] = [
   {

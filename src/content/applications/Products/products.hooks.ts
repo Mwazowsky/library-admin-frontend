@@ -4,9 +4,7 @@ import { ICar } from './products.types';
 import { IApiResponse, IMeta, IParams } from '../../../services/types';
 import { useNavigate } from 'react-router-dom';
 
-type CarData = {
-  cars: ICar[];
-};
+type CarData = Array<ICar>;
 
 export default function useList() {
   const navigate = useNavigate();
@@ -16,7 +14,7 @@ export default function useList() {
   });
   const [meta, setMeta] = useState<IMeta>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [cars, setCars] = useState<CarData>({ cars: [] });
+  const [cars, setCars] = useState<CarData>([]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -35,7 +33,7 @@ export default function useList() {
     const confirmed = confirm('Are you sure want to delete?');
     if (confirmed) {
       try {
-        await axios.delete(`https://binar-rental-backend-app.fly.dev/api/cars/${record?.car_id}`, {
+        await axios.delete(`http://localhost:8060/api/cars/${record?.car_id}`, {
           headers: {
             Authorization: localStorage.getItem('token'),
           },
@@ -56,7 +54,7 @@ export default function useList() {
     if (confirmed) {
       try {
         const deletePromises = carIds.map(async (carId) => {
-          await axios.delete(`https://binar-rental-backend-app.fly.dev/api/cars/${carId}`, {
+          await axios.delete(`http://localhost:8060/api/cars/${carId}`, {
             headers: {
               Authorization: localStorage.getItem('token'),
             },
@@ -80,7 +78,7 @@ export default function useList() {
     try {
       setLoading(true);
       const response = await axios.get<IApiResponse<CarData>>(
-        'https://binar-rental-backend-app.fly.dev/api/cars',
+        'http://localhost:8060/api/cars',
         {
           params,
           headers: {
@@ -89,7 +87,7 @@ export default function useList() {
         }
       );
       console.log("Response hook >>> ", response);
-      setCars(response?.data?.data);
+      setCars(response?.data.data);
       setMeta(response.data.meta);
     } catch (error) {
       console.log('error > ', error);
