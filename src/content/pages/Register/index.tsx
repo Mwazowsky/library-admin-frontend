@@ -86,7 +86,7 @@ function Register() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8060/api/user/register", {
+      await axios.post("https://binar-rental-backend-app.fly.dev/api/user/register", {
         first_name: firstName,
         last_name: lastName,
         email: email,

@@ -43,7 +43,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8060/api/user/login",
+        "https://binar-rental-backend-app.fly.dev/api/user/login",
         { email, password }
       );
 

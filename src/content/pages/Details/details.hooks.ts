@@ -34,7 +34,7 @@ export default function useDetails() {
         const fetchCarData = useCallback(async () => {
             try {
               const response = await axios.get(
-                `http://localhost:8060/api/cars/${car_id}`,
+                `https://binar-rental-backend-app.fly.dev/api/cars/${car_id}`,
                 {
                   headers: {
                     Authorization: localStorage.getItem("token"),

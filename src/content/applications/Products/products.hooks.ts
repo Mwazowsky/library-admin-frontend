@@ -33,7 +33,7 @@ export default function useList() {
     const confirmed = confirm('Are you sure want to delete?');
     if (confirmed) {
       try {
-        await axios.delete(`http://localhost:8060/api/cars/${record?.car_id}`, {
+        await axios.delete(`https://binar-rental-backend-app.fly.dev/api/cars/${record?.car_id}`, {
           headers: {
             Authorization: localStorage.getItem('token'),
           },
@@ -54,7 +54,7 @@ export default function useList() {
     if (confirmed) {
       try {
         const deletePromises = carIds.map(async (carId) => {
-          await axios.delete(`http://localhost:8060/api/cars/${carId}`, {
+          await axios.delete(`https://binar-rental-backend-app.fly.dev/api/cars/${carId}`, {
             headers: {
               Authorization: localStorage.getItem('token'),
             },
@@ -78,7 +78,7 @@ export default function useList() {
     try {
       setLoading(true);
       const response = await axios.get<IApiResponse<CarData>>(
-        'http://localhost:8060/api/cars',
+        'https://binar-rental-backend-app.fly.dev/api/cars',
         {
           params,
           headers: {
