@@ -25,7 +25,7 @@ import { CloudUpload } from "@mui/icons-material";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 
 import { VisuallyHiddenInput } from "./createForm.styled";
-import useAction from "./createForm.hooks";
+import useForm from "../../../../hooks/form.hooks";
 
 function Forms() {
   const {
@@ -42,7 +42,7 @@ function Forms() {
     fileItem,
     optionsInputFields,
     specsInputFields,
-  } = useAction();
+  } = useForm();
 
   return (
     <>
@@ -52,7 +52,7 @@ function Forms() {
       <PageTitleWrapper>
         <PageTitle
           heading="Create New Car"
-          subHeading="Components that are used to build interactive placeholders used for data collection from users."
+          subHeading="Pastikan setiap field pada kolom input terisi."
           docs="/management/products"
           actionElement={
             <form onSubmit={handleSubmit}>

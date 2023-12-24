@@ -19,11 +19,10 @@ import Footer from "../../../components/Footer";
 
 import Typography from "@mui/material/Typography";
 
-import useAction from "./details.hooks";
+import useDetails from "../../../hooks/details.hooks";
 
 function Details() {
-  const { fetchCarData, car} =
-    useAction();
+  const { fetchCarData, car } = useDetails();
 
   useEffect(() => {
     fetchCarData();

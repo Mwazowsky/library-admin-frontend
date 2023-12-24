@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ICar } from 'src/models/product';
+import { ICar } from 'src/types/product';
 
 export default function useDetails() {
     const { car_id } = useParams();
@@ -24,9 +24,7 @@ export default function useDetails() {
         created_by: 0,
         updated_by: 0,
     });
-    const [optionsInputFields, setOptionsInputFields] = useState<
-        { option: string }[]
-    >([{ option: "" }]);
+    const [optionsInputFields, setOptionsInputFields] = useState<{ option: string }[]>([{ option: "" }]);
     const [specsInputFields, setSpecsInputFields] = useState<
         { spec: string }[]
     >([{ spec: "" }]);
@@ -51,11 +49,11 @@ export default function useDetails() {
           }, [car_id]);
 
         return {
-            fetchCarData,
-            setCar,
-            car,
-            optionsInputFields,
-            specsInputFields
+          car,
+          optionsInputFields,
+          specsInputFields,
+          setCar,
+          fetchCarData
         };
     }
 }

@@ -1,5 +1,4 @@
 import { FormEvent, useState } from "react";
-import axios, { AxiosError } from "axios";
 import {
   Box,
   Card,
@@ -10,10 +9,10 @@ import {
   FormControl,
   TextField,
   Alert,
-  AlertProps,
 } from "@mui/material";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
+
+import { useLoginForm } from "../../../hooks/login.hooks";
 
 import { styled } from "@mui/material/styles";
 
@@ -29,44 +28,16 @@ const MainContent = styled(Box)(
 `
 );
 
-interface IAlert extends AlertProps {
-  message: string;
-}
-
 function Login() {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const [alert, setAlert] = useState<IAlert>();
-  const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const { handleSubmit, alert } = useLoginForm();
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "https://binar-rental-backend-app.fly.dev/api/user/login",
-        { email, password }
-      );
-
-      const { token } = response.data;
-
-      localStorage.setItem("token", `Bearer ${token}`);
-
-      setAlert({
-        message: "Login success!",
-        severity: "success",
-      });
-      navigate("/management/products");
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        return setAlert({
-          message: error?.response?.data?.message,
-          severity: "error",
-        });
-      }
-      setAlert({
-        message: "Failed",
-        severity: "error",
-      });
+    if (email && password) {
+      handleSubmit(email, password);
     }
   };
 
@@ -97,7 +68,7 @@ function Login() {
                 {alert && alert.message && (
                   <Alert severity={alert.severity}>{alert.message}</Alert>
                 )}
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleFormSubmit}>
                   <FormControl
                     sx={{
                       "& .MuiTextField-root": { m: 1 },

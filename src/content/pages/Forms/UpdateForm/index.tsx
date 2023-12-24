@@ -26,7 +26,7 @@ import { CloudUpload } from "@mui/icons-material";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 
 import { VisuallyHiddenInput } from "./updateForm.styled";
-import useAction from "./updateForm.hooks";
+import useForm from "../../../../hooks/form.hooks";
 
 function Forms() {
   const {
@@ -44,7 +44,7 @@ function Forms() {
     fileItem,
     optionsInputFields,
     specsInputFields,
-  } = useAction();
+  } = useForm();
 
   useEffect(() => {
     fetchCarData();
@@ -60,7 +60,7 @@ function Forms() {
       <PageTitleWrapper>
         <PageTitle
           heading="Update a Car"
-          subHeading="Components that are used to build interactive placeholders used for data collection from users."
+          subHeading="Pastikan setiap field pada kolom input terisi"
           docs="/management/products"
           actionElement={
             <form onSubmit={handleSubmit}>

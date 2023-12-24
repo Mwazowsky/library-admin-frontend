@@ -1,12 +1,32 @@
 import axios from 'axios';
 import { ChangeEvent, MouseEvent, useCallback, useEffect, useState } from 'react';
-import { ICar } from './products.types';
-import { IApiResponse, IMeta, IParams } from '../../../services/types';
+import { ICar } from '../content/applications/Products/products.types';
+import { IApiResponse, IMeta, IParams } from '../services/types';
 import { useNavigate } from 'react-router-dom';
+import { Filters } from "../types/productsTable";
+import { SelectChangeEvent } from '@mui/material';
+
+const statusOptions = [
+    {
+        id: "all",
+        name: "All",
+        value: "all",
+    },
+    {
+        id: "available",
+        name: "Available",
+        value: "available",
+    },
+    {
+        id: "unavailable",
+        name: "Unavailable",
+        value: "unavailable",
+    },
+];
 
 type CarData = Array<ICar>;
 
-export default function useList() {
+export default function useProducts() {
   const navigate = useNavigate();
   const [params, setParams] = useState<IParams>({
     page: 1,
@@ -15,6 +35,24 @@ export default function useList() {
   const [meta, setMeta] = useState<IMeta>();
   const [loading, setLoading] = useState<boolean>(false);
   const [cars, setCars] = useState<CarData>([]);
+  const [filters, setFilters] = useState<Filters>({ status: "all" });
+  const [selectedcars, setSelectedcars] = useState<number[]>([]);
+
+  const handleStatusChange = (e: SelectChangeEvent<string>): void => {
+    const value = e.target.value;
+    console.log("value >>>", value);
+    const selectedOption = statusOptions.find((option) => option.id === value);
+
+    if (selectedOption) {
+      console.log("Selected Option:", selectedOption.value);
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        status: selectedOption.value,
+      }));
+    } else {
+      console.log("No matching option found for value:", value);
+    }
+  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -102,10 +140,12 @@ export default function useList() {
 
   return {
     cars,
+    filters, 
     params,
-    setParams,
     loading,
     meta,
+    setParams,
+    handleStatusChange,
     handleEdit,
     handleRemove,
     handleRemoveMultiple,

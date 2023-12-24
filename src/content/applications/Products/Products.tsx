@@ -1,23 +1,26 @@
 import { Card } from '@mui/material';
 
-import useAction from "./products.hooks";
 import ProductsTable from './ProductsTable';
+
+import useProducts from "../../../hooks/products.hooks";
 
 function Products() {
   const {
     cars,
+    filters, 
+    handleStatusChange,
     handleEdit,
     handleRemove,
     handleRemoveMultiple,
-    handleSearch,
-  } = useAction();
-
-  console.log(cars);
+    handleSearch
+  } = useProducts();
 
   return (
     <Card>
       <ProductsTable 
-        cars={cars} 
+        cars={cars}
+        filters={filters}
+        handleStatusChange={handleStatusChange}
         handleEdit={handleEdit} 
         handleRemove={handleRemove} 
         handleSearch={handleSearch}

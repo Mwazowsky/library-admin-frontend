@@ -1,12 +1,31 @@
 import axios from 'axios';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IFileItem } from 'src/services/types';
-import { ICar } from 'src/models/product';
+import { ICar } from 'src/types/product';
 
-export default function useCreate() {
+export default function useForm() {
+    const { car_id } = useParams();
     const navigate = useNavigate();
-    const [formValues, setFormValues] = useState<ICar>();
+    const [formValues, setFormValues] = useState<ICar>({
+        car_id: 0,
+        plate: "",
+        manufacture: "",
+        image: "",
+        model: "",
+        type: "",
+        description: "",
+        transmission: "",
+        capacity: 0,
+        rentPerDay: "",
+        availableAt: "",
+        available: false,
+        year: 0,
+        options: {},
+        specs: {},
+        created_by: 0,
+        updated_by: 0,
+    });
     const [loadingCover, setLoadingCover] = useState<boolean>(false);
     const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
     const [fileItem, setFileItem] = useState<IFileItem>();
@@ -16,6 +35,25 @@ export default function useCreate() {
     const [specsInputFields, setSpecsInputFields] = useState<
         { spec: string }[]
     >([{ spec: "" }]);
+
+    const fetchCarData = useCallback(async () => {
+        try {
+          const response = await axios.get(
+            `https://binar-rental-backend-app.fly.dev/api/cars/${car_id}`,
+            {
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+            }
+          );
+          const carData = response.data.data;
+          setFormValues(carData);
+          setOptionsInputFields(carData.options.optionsInputFields);
+          setSpecsInputFields(carData.specs.specsInputFields);
+        } catch (error) {
+          console.log("error > ", error);
+        }
+      }, [car_id]);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -107,18 +145,19 @@ export default function useCreate() {
     };
 
     return {
+        formValues,
+        loadingCover,
+        loadingSubmit,
+        fileItem,
+        optionsInputFields,
+        specsInputFields,
+        fetchCarData,
         handleSubmit,
         handleUploadCover,
         setFormValues,
         handleOptionsFormChange,
         handleSpecsFormChange,
         addOptionFields,
-        addSpecFields,
-        formValues,
-        loadingCover,
-        loadingSubmit,
-        fileItem,
-        optionsInputFields,
-        specsInputFields
+        addSpecFields
     };
 }

@@ -25,16 +25,17 @@ import {
   Typography,
   useTheme,
   CardHeader,
-  SelectChangeEvent
 } from "@mui/material";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
-import Label from "../../../components/Label";
 import { ICar } from "./products.types";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import BulkActions from "./BulkActions";
 import { format, parseISO } from "date-fns";
+import Label from "../../../components/Label";
+
+import { Filters } from "../../../types/productsTable";
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
@@ -50,6 +51,8 @@ const ButtonError = styled(Button)(
 interface ProductsTableProps {
   className?: string;
   cars: ICar[];
+  filters: Filters;
+  handleStatusChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleEdit: (event: React.MouseEvent<HTMLButtonElement>, car: ICar) => void;
   handleRemove: (event: React.MouseEvent<HTMLButtonElement>, car: ICar) => void;
   handleSearch: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -61,9 +64,6 @@ interface ProductsTableProps {
 
 type BoolCarStatus = boolean;
 
-interface Filters {
-  status?: string;
-}
 
 type ColorType = "error" | "success"; // Define the specific color types accepted by Label
 
@@ -113,6 +113,8 @@ const applyPagination = (cars: ICar[], page: number, limit: number): ICar[] => {
 
 const ProductsTable: FC<ProductsTableProps> = ({
   cars,
+  filters,
+  handleStatusChange,
   handleEdit,
   handleRemove,
   handleRemoveMultiple,
@@ -123,9 +125,6 @@ const ProductsTable: FC<ProductsTableProps> = ({
   const selectedBulkActions = selectedcars.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
-  const [filters, setFilters] = useState<Filters>({ status: "all" });
-
-  console.log(cars);
 
   const statusOptions = [
     {
@@ -145,30 +144,12 @@ const ProductsTable: FC<ProductsTableProps> = ({
     },
   ];
 
-  const handleStatusChange = (e: SelectChangeEvent<string>): void => {
-    const value = e.target.value;
-    console.log("value >>>", value);
-    const selectedOption = statusOptions.find((option) => option.id === value);
-  
-    if (selectedOption) {
-      console.log("Selected Option:", selectedOption.value);
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        status: selectedOption.value,
-      }));
-    } else {
-      console.log("No matching option found for value:", value);
-    }
-  };
-
   const handleSelectAllCars = (event: ChangeEvent<HTMLInputElement>): void => {
     setSelectedcars(event.target.checked ? cars.map((car) => car.car_id) : []);
     console.log(selectedcars);
   };
 
-  const handleSelectOnecar = (
-    car_id: number
-  ): void => {
+  const handleSelectOnecar = (car_id: number): void => {
     if (!selectedcars.includes(car_id)) {
       setSelectedcars((prevSelected) => [...prevSelected, car_id]);
     } else {
@@ -178,7 +159,10 @@ const ProductsTable: FC<ProductsTableProps> = ({
     }
   };
 
-  const handlePageChange = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number): void => {
+  const handlePageChange = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ): void => {
     event.preventDefault();
     setPage(newPage);
   };
@@ -282,6 +266,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
               return (
                 <TableRow
                   hover
+                  data-testid="table-rows"
                   key={car.car_id}
                   selected={iscarselected}
                   onClick={() => navigate(`/detail/${car.car_id}`)}
@@ -290,9 +275,7 @@ const ProductsTable: FC<ProductsTableProps> = ({
                     <Checkbox
                       color="primary"
                       checked={iscarselected}
-                      onChange={() =>
-                        handleSelectOnecar(car.car_id)
-                      }
+                      onChange={() => handleSelectOnecar(car.car_id)}
                       value={iscarselected}
                       onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
                         event.stopPropagation()
